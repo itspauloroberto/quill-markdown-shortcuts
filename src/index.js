@@ -1,36 +1,37 @@
- // Quill.js Plugin - Markdown Shortcuts
- // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
- // which converts text entered as markdown to rich text.
- //
- // v0.0.5
- //
- // Author: Patrick Lee (me@patricklee.nyc)
- //
- // (c) Copyright 2017 Patrick Lee (me@patricklee.nyc).
- // Permission is hereby granted, free of charge, to any person obtaining a copy
- // of this software and associated documentation files (the "Software"), to deal
- // in the Software without restriction, including without limitation the rights
- // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- // copies of the Software, and to permit persons to whom the Software is
- // furnished to do so, subject to the following conditions:
- //
- // The above copyright notice and this permission notice shall be included in
- // all copies or substantial portions of the Software.
- //
- // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- // THE SOFTWARE.
- //
+// Quill.js Plugin - Markdown Shortcuts
+// This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
+// which converts text entered as markdown to rich text.
+//
+// v0.0.5
+//
+// Author: Patrick Lee (me@patricklee.nyc)
+//
+// (c) Copyright 2017 Patrick Lee (me@patricklee.nyc).
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 
 import HorizontalRule from './formats/hr'
+import Quill from 'quill'
 Quill.register('formats/horizontal', HorizontalRule)
 
 class MarkdownShortcuts {
-  constructor (quill, options) {
+  constructor(quill, options) {
     this.quill = quill
     this.options = options
 
@@ -48,7 +49,7 @@ class MarkdownShortcuts {
             this.quill.formatLine(selection.index, 0, 'header', size - 1)
             this.quill.deleteText(selection.index - size, size)
           }, 0)
-        }
+        },
       },
       {
         name: 'blockquote',
@@ -59,7 +60,7 @@ class MarkdownShortcuts {
             this.quill.formatLine(selection.index, 1, 'blockquote', true)
             this.quill.deleteText(selection.index - 2, 2)
           }, 0)
-        }
+        },
       },
       {
         name: 'code-block',
@@ -70,7 +71,7 @@ class MarkdownShortcuts {
             this.quill.formatLine(selection.index, 1, 'code-block', true)
             this.quill.deleteText(selection.index - 4, 4)
           }, 0)
-        }
+        },
       },
       {
         name: 'bolditalic',
@@ -86,10 +87,10 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {bold: true, italic: true})
+            this.quill.insertText(startIndex, matchedText, { bold: true, italic: true })
             this.quill.format('bold', false)
           }, 0)
-        }
+        },
       },
       {
         name: 'bold',
@@ -105,10 +106,10 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {bold: true})
+            this.quill.insertText(startIndex, matchedText, { bold: true })
             this.quill.format('bold', false)
           }, 0)
-        }
+        },
       },
       {
         name: 'italic',
@@ -124,10 +125,10 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {italic: true})
+            this.quill.insertText(startIndex, matchedText, { italic: true })
             this.quill.format('italic', false)
           }, 0)
-        }
+        },
       },
       {
         name: 'strikethrough',
@@ -143,10 +144,10 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {strike: true})
+            this.quill.insertText(startIndex, matchedText, { strike: true })
             this.quill.format('strike', false)
           }, 0)
-        }
+        },
       },
       {
         name: 'code',
@@ -162,25 +163,25 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {code: true})
+            this.quill.insertText(startIndex, matchedText, { code: true })
             this.quill.format('code', false)
             this.quill.insertText(this.quill.getSelection(), ' ')
           }, 0)
-        }
+        },
       },
       {
         name: 'hr',
         pattern: /^([-*]\s?){3}/g,
         action: (text, selection) => {
-          const startIndex = selection.index - text.length;
+          const startIndex = selection.index - text.length
           setTimeout(() => {
             this.quill.deleteText(startIndex, text.length)
 
-            this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
-            this.quill.insertText(startIndex + 2, "\n", Quill.sources.SILENT);
-            this.quill.setSelection(startIndex + 2, Quill.sources.SILENT);
+            this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER)
+            this.quill.insertText(startIndex + 2, '\n', Quill.sources.SILENT)
+            this.quill.setSelection(startIndex + 2, Quill.sources.SILENT)
           }, 0)
-        }
+        },
       },
       {
         name: 'asterisk-ul',
@@ -190,7 +191,7 @@ class MarkdownShortcuts {
             this.quill.formatLine(selection.index, 1, 'list', 'unordered')
             this.quill.deleteText(selection.index - 2, 2)
           }, 0)
-        }
+        },
       },
       {
         name: 'image',
@@ -207,7 +208,7 @@ class MarkdownShortcuts {
               this.quill.insertEmbed(start, 'image', hrefLink.slice(1, hrefLink.length - 1))
             }, 0)
           }
-        }
+        },
       },
       {
         name: 'link',
@@ -221,11 +222,16 @@ class MarkdownShortcuts {
           if (startIndex !== -1) {
             setTimeout(() => {
               this.quill.deleteText(start, matchedText.length)
-              this.quill.insertText(start, hrefText.slice(1, hrefText.length - 1), 'link', hrefLink.slice(1, hrefLink.length - 1))
+              this.quill.insertText(
+                start,
+                hrefText.slice(1, hrefText.length - 1),
+                'link',
+                hrefLink.slice(1, hrefLink.length - 1)
+              )
             }, 0)
           }
-        }
-      }
+        },
+      },
     ]
 
     // Handler that looks for insert deltas that match specific characters
@@ -242,15 +248,11 @@ class MarkdownShortcuts {
     })
   }
 
-  isValid (text, tagName) {
-    return (
-      typeof text !== 'undefined' &&
-      text &&
-      this.ignoreTags.indexOf(tagName) === -1
-    )
+  isValid(text, tagName) {
+    return typeof text !== 'undefined' && text && this.ignoreTags.indexOf(tagName) === -1
   }
 
-  onSpace () {
+  onSpace() {
     const selection = this.quill.getSelection()
     if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
@@ -269,7 +271,7 @@ class MarkdownShortcuts {
     }
   }
 
-  onEnter () {
+  onEnter() {
     let selection = this.quill.getSelection()
     if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
